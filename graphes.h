@@ -12,7 +12,8 @@ struct eltadj {
 
 struct sommet {
 	int label;
-	int info;
+	int info; //1 = deja passé par le sommet
+	int info2;
 	struct sommet *suivant;
 	struct eltadj *adj;
 };

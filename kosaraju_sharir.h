@@ -3,4 +3,6 @@
 #include "graphes.h"
 void creerTransposee(char *nomf, GRAPHE *);
 /* Creer la Transposee d'une matrice écrite dans le fichier nomf et la traduit en graphe*/
+
+SOMMET *RechercheSommetSuivant(SOMMET *, int label);
 #endif

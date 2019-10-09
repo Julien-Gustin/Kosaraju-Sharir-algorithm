@@ -25,6 +25,7 @@ int ajouterSommet(GRAPHE *g, int info)
 		{
 			pointeur->label=g->maxS;
 			pointeur->info=info;
+			pointeur->info2=info;
 			pointeur->suivant=NULL;
 			pointeur->adj=NULL;
 			if (g->nbS == 0)

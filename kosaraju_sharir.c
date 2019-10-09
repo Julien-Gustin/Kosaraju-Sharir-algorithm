@@ -3,6 +3,15 @@
 #include "kosaraju_sharir.h"
 #include "graphes.h"
 
+SOMMET *RechercheSommetSuivant(SOMMET *s, int label)
+{
+
+  while(s->label != label)
+    s = s->suivant;
+
+  return s;
+}
+
 void creerTransposee(char *nomf, GRAPHE *g_t)
 {
   FILE *fp = fopen(nomf, "r"); /* ouvre un fichier en lecture */
