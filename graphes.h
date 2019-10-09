@@ -4,6 +4,11 @@
 
 #define MAX 10000
 
+struct date {
+	int debut;
+	int fin;
+};
+
 struct eltadj {
 	int dest;
 	int info;
@@ -12,8 +17,9 @@ struct eltadj {
 
 struct sommet {
 	int label;
-	int info; //1 = deja passé par le sommet
-	int info2;
+	int couleur; /* 0 = blanc, 1 = rouge, 2 = noir */
+	int info;
+	struct date date;
 	struct sommet *suivant;
 	struct eltadj *adj;
 };
