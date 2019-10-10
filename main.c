@@ -21,7 +21,10 @@ int main(int argc, char *argv[]) {
   GRAPHE g;
   GRAPHE g_t;
 
-  lireFichier(input,&g);
+  if(lireFichier(input,&g) == -1){
+    printf("Veuillez donner un fichier valide et existant\n");
+    return -1;
+  }
   SOMMET *psommet = g.premierSommet;
 
   creerTransposee(input, &g_t);

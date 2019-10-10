@@ -337,6 +337,10 @@ int lireFichier(char *nomf, GRAPHE *g)
 
 	initialiserGraphe(g);
   fp=fopen(nomf,"r"); /* ouvre un fichier en lecture */
+	if(fp==NULL)
+		return -1;
+
+
   nbLigne=0; /* compte les lignes du fichier */
   sommet=0; /* label du sommet en cours */
   nbS1=0; /* compte les sommets de la 1ere ligne */
