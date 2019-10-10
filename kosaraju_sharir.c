@@ -34,13 +34,17 @@ static void DFS(GRAPHE *g, SOMMET *s, int *date)
   s->couleur = 1;
   s->date.debut = (*date)++;
   if(s->info ==  2) // 2 = transposee
-    printf(".%d.\n", s->label);
+    printf("%d", s->label);
 
   ELTADJ *padj = s->adj;
 
   while(padj != NULL){ //fait passer tout les sommets dans l'algorithme en suivant les arcs flèchés
-    if(RechercheSommetSuivant(g->premierSommet, padj->dest)->couleur == 0) //on ne renvois pas les sommets qui sont déja passé dans l'algorithme ( couleur = 1 )
+    if(RechercheSommetSuivant(g->premierSommet, padj->dest)->couleur == 0){ //on ne renvois pas les sommets qui sont déja passé dans l'algorithme ( couleur = 1 )
+      if(s->info ==  2)
+        printf(", ");
+
       DFS(g, RechercheSommetSuivant(g->premierSommet, padj->dest), date);
+    }
 
     padj = padj->suivant;
   }
@@ -51,8 +55,8 @@ static void DFS(GRAPHE *g, SOMMET *s, int *date)
 void affichage(SOMMET *sommet)
 {
   SOMMET *psommet = sommet;
+      printf("\n");
   while(psommet != NULL){
-
     printf("sommet : %d (%d.%d)\n", psommet->label, psommet->date.debut, psommet->date.fin);
     psommet = psommet->suivant;
   }
@@ -88,6 +92,7 @@ void DFS_run(GRAPHE *g, int *tab){
   int i = 0;
 
   initCouleur(g->premierSommet);
+  printf("Les composantes f connexes sont : \n \n");
 
   if(psommet->info == 2)
     psommet = RechercheSommetSuivant(psommet, tab[i]);
@@ -95,7 +100,13 @@ void DFS_run(GRAPHE *g, int *tab){
   while(psommet != NULL && i < g->nbS - 1){
 
     if(psommet->couleur == 0){
+      if(psommet->info == 2)
+        printf("(");
+
       DFS(g, psommet, &date);
+      if(psommet->info == 2)
+        printf(")");
+
       printf("\n");
 }
 

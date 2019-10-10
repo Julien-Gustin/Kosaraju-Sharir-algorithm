@@ -13,7 +13,7 @@ int main(int argc, char *argv[]) {
       input = optarg;
     }
     if(input == NULL){
-      printf("Veuillez compiler tel que \n  \" ./main -i nomDuFichier.gr \"");
+      printf("Veuillez compiler tel que \n  \" ./main -i nomDuFichier.gr \" \n");
       return -1;
     }
 
@@ -23,7 +23,6 @@ int main(int argc, char *argv[]) {
 
   lireFichier(input,&g);
   SOMMET *psommet = g.premierSommet;
-  afficherGraphe(&g);
 
   creerTransposee(input, &g_t);
   SOMMET *psommet2 = g_t.premierSommet;
