@@ -1,16 +1,31 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <getopt.h>
 #include "graphes.h"
 #include "kosaraju_sharir.h"
-int main(){
+int main(int argc, char *argv[]) {
+  char *optstring = ":i:";
+  char val;
+  char *input = NULL;
+
+  while((val=getopt(argc, argv, optstring))!=EOF){
+    if(val == 'i')
+      input = optarg;
+    }
+    if(input == NULL){
+      printf("Veuillez compiler tel que \n  \" ./main -i nomDuFichier.gr \"");
+      return -1;
+    }
+
+
   GRAPHE g;
   GRAPHE g_t;
 
-  lireFichier("data3.gr",&g);
+  lireFichier(input,&g);
   SOMMET *psommet = g.premierSommet;
   afficherGraphe(&g);
 
-  creerTransposee("data3.gr", &g_t);
+  creerTransposee(input, &g_t);
   SOMMET *psommet2 = g_t.premierSommet;
 
   int *tab = malloc(sizeof(int) * g.nbS);
