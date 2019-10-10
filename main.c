@@ -1,40 +1,34 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdbool.h>
 #include "graphes.h"
 #include "kosaraju_sharir.h"
 int main(){
   GRAPHE g;
   GRAPHE g_t;
 
-  lireFichier("data.gr",&g);
+  lireFichier("data3.gr",&g);
+  SOMMET *psommet = g.premierSommet;
+  afficherGraphe(&g);
+
+  creerTransposee("data3.gr", &g_t);
+  SOMMET *psommet2 = g_t.premierSommet;
+
   int *tab = malloc(sizeof(int) * g.nbS);
     if(tab == NULL)
       return -1;
-  SOMMET *psommet = g.premierSommet;
-  creerTransposee("data.gr", &g_t);
-  SOMMET *psommet2 = g_t.premierSommet;
-  DFS_run(&g, false, tab);
 
+  DFS_run(&g, tab); //lance l'algorithme de parcours en profondeur pour le graphique g
 
-  while(psommet != NULL){
+  affichage(psommet);
 
-    printf("sommet : %d (%d.%d)\n", psommet->label, psommet->date.debut, psommet->date.fin);
-    psommet = psommet->suivant;
-  }
 
   for(int i = 0; i < g.nbS; i++)
-    tab[i] = decroissantDateFin(g.premierSommet);
+    tab[i] = decroissantDateFin(g.premierSommet); //ordre de passage dans DFS de la transposee de g
 
 
-  printf("\n");
-    DFS_run(&g_t, true, tab);
+  DFS_run(&g_t, tab); //lance l'algorithme de parcours en profondeur pour la transposee graphique g
+  affichage(psommet2);
 
-  while(psommet2 != NULL){
-
-    printf("sommet : %d (%d.%d)\n", psommet2->label-1, psommet2->date.debut, psommet2->date.fin);
-    psommet2 = psommet2->suivant;
-  }
   free(tab);
   supprimerGraphe(&g_t);
   supprimerGraphe(&g);

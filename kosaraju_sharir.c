@@ -3,7 +3,16 @@
 #include "kosaraju_sharir.h"
 #include "graphes.h"
 
-SOMMET *RechercheSommetSuivant(SOMMET *s, int label)
+static SOMMET *RechercheSommetSuivant(SOMMET *s, int label);
+/* renvois un sommet à l'aide de son numero label */
+
+static void DFS(GRAPHE *g, SOMMET *s, int *date);
+/* l'algorithme de parcours en profondeur pour le graphique g */
+
+static void initCouleur(SOMMET *psommet);
+/* initialise les "couleurs" des sommets */
+
+static SOMMET *RechercheSommetSuivant(SOMMET *s, int label)
 {
 
   while(s->label != label)
@@ -12,19 +21,54 @@ SOMMET *RechercheSommetSuivant(SOMMET *s, int label)
   return s;
 }
 
-static void initCouleur(SOMMET *psommet){
+static void initCouleur(SOMMET *psommet)
+{
   while(psommet != NULL){
     psommet->couleur = 0;
     psommet = psommet->suivant;
   }
 }
 
+static void DFS(GRAPHE *g, SOMMET *s, int *date)
+{
+  s->couleur = 1;
+  s->date.debut = (*date)++;
+  if(s->info ==  2) // 2 = transposee
+    printf(".%d.\n", s->label);
 
-int decroissantDateFin(SOMMET *psommet){
+  ELTADJ *padj = s->adj;
+
+  while(padj != NULL){ //fait passer tout les sommets dans l'algorithme en suivant les arcs flèchés
+    if(RechercheSommetSuivant(g->premierSommet, padj->dest)->couleur == 0) //on ne renvois pas les sommets qui sont déja passé dans l'algorithme ( couleur = 1 )
+      DFS(g, RechercheSommetSuivant(g->premierSommet, padj->dest), date);
+
+    padj = padj->suivant;
+  }
+
+  s->date.fin = (*date)++;
+}
+
+void affichage(SOMMET *sommet)
+{
+  SOMMET *psommet = sommet;
+  while(psommet != NULL){
+
+    printf("sommet : %d (%d.%d)\n", psommet->label, psommet->date.debut, psommet->date.fin);
+    psommet = psommet->suivant;
+  }
+    printf("\n");
+
+}
+
+
+int decroissantDateFin(SOMMET *psommet)
+{
   SOMMET *sommetR = psommet;
   int sommetN;
   sommetN = -1;
+
   while(psommet != NULL){
+
     if((sommetN < psommet->date.fin) && psommet->info == 0){
       sommetN = psommet->date.fin;
       sommetR = psommet;
@@ -32,41 +76,38 @@ int decroissantDateFin(SOMMET *psommet){
 
     psommet = psommet->suivant;
   }
-  sommetR->info = 1;
-  //psommet->date.fin = 10;
 
+  sommetR->info = 1;
   return sommetR->label;
 
 }
 
-
-
-void DFS_run(GRAPHE *g, int transposee, int *tab){
+void DFS_run(GRAPHE *g, int *tab){
   SOMMET *psommet = g->premierSommet;
   int date = 1;
   int i = 0;
+
   initCouleur(g->premierSommet);
 
-  if(transposee)
+  if(psommet->info == 2)
     psommet = RechercheSommetSuivant(psommet, tab[i]);
-
-
 
   while(psommet != NULL && i < g->nbS - 1){
 
-
-    if(psommet->couleur == 0)
+    if(psommet->couleur == 0){
       DFS(g, psommet, &date);
+      printf("\n");
+}
 
-    if(!transposee)
+    if(psommet->info != 2)
       psommet = psommet->suivant;
 
     else{
       i++;
       psommet = RechercheSommetSuivant(g->premierSommet, tab[i]);
     }
-
   }
+
   psommet = g->premierSommet;
   while(psommet != NULL){
 
@@ -75,26 +116,6 @@ void DFS_run(GRAPHE *g, int transposee, int *tab){
 
   }
 }
-
-void DFS(GRAPHE *g, SOMMET *s, int *date){
-  s->couleur = 1;
-  s->date.debut = (*date)++;
-  ELTADJ *padj = s->adj;
-
-  while(padj != NULL){
-    if(RechercheSommetSuivant(g->premierSommet, padj->dest)->couleur == 0)
-      DFS(g, RechercheSommetSuivant(g->premierSommet, padj->dest), date);
-    padj = padj->suivant;
-  }
-
-  s->date.fin = (*date)++;
-}
-
-
-
-
-
-
 
 void creerTransposee(char *nomf, GRAPHE *g_t)
 {
@@ -105,6 +126,7 @@ void creerTransposee(char *nomf, GRAPHE *g_t)
   char **matrice_t;
   int compteurLigne = 0;
   int compteurColonne = 0;
+  SOMMET *psommet;
 
   while (fgets(ligne,MAX,fp) != NULL)
     {
@@ -166,4 +188,10 @@ void creerTransposee(char *nomf, GRAPHE *g_t)
     fclose(fp2);
 
     lireFichier("matriceT.gr", g_t);
+
+    psommet = g_t->premierSommet;
+
+    for(;psommet !=NULL; psommet = psommet->suivant)
+      psommet->info = 2; //indique que c'est la transposee
+
 }
