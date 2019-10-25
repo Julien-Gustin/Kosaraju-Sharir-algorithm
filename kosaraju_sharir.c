@@ -92,7 +92,8 @@ void DFS_run(GRAPHE *g, int *tab){
   int i = 0;
 
   initCouleur(g->premierSommet);
-  printf("Les composantes f connexes sont : \n \n");
+  if(psommet->info == 2)
+    printf("Les composantes f connexes sont : \n \n");
 
   if(psommet->info == 2)
     psommet = RechercheSommetSuivant(psommet, tab[i]);
