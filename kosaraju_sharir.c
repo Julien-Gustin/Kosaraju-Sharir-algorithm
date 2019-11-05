@@ -98,15 +98,18 @@ void DFS_run(GRAPHE *g, int *tab){
   if(psommet->info == 2)
     psommet = RechercheSommetSuivant(psommet, tab[i]);
 
-  while(psommet != NULL && i < g->nbS - 1){
+  while(psommet != NULL && i < g->nbS){
+
 
     if(psommet->couleur == 0){
       if(psommet->info == 2)
         printf("(");
 
       DFS(g, psommet, &date);
+
       if(psommet->info == 2)
         printf(")");
+
 
       printf("\n");
 }
@@ -116,7 +119,10 @@ void DFS_run(GRAPHE *g, int *tab){
 
     else{
       i++;
-      psommet = RechercheSommetSuivant(g->premierSommet, tab[i]);
+
+      if(i < g->nbS)
+        psommet = RechercheSommetSuivant(g->premierSommet, tab[i]);
+
     }
   }
 
@@ -127,6 +133,7 @@ void DFS_run(GRAPHE *g, int *tab){
     psommet = psommet->suivant;
 
   }
+
 }
 
 void creerTransposee(char *nomf, GRAPHE *g_t)
