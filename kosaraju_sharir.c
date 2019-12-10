@@ -108,10 +108,7 @@ void DFS_run(GRAPHE *g, int *tab){
       DFS(g, psommet, &date);
 
       if(psommet->info == 2)
-        printf(")");
-
-
-      printf("\n");
+        printf(")\n");
 }
 
     if(psommet->info != 2)

@@ -39,13 +39,13 @@ int main(int argc, char *argv[]) {
 
   DFS_run(&g, tab); //lance l'algorithme de parcours en profondeur pour le graphique g
 
-  affichage(g.premierSommet);
+  //affichage(g.premierSommet);
 
   for(int i = 0; i < g.nbS; i++)
     tab[i] = decroissantDateFin(g.premierSommet); //ordre de passage dans DFS de la transposee de g
 
   DFS_run(&g_t, tab); //lance l'algorithme de parcours en profondeur pour la transposee graphique g
-  affichage(g_t.premierSommet);
+  //affichage(g_t.premierSommet);
 
   free(tab);
   supprimerGraphe(&g_t);
