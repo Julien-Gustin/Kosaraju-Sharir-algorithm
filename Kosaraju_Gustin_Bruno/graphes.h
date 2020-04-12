@@ -17,7 +17,7 @@ struct eltadj {
 
 struct sommet {
 	int label;
-	int couleur; /* 0 = blanc, 1 = rouge, 2 = noir */
+	int couleur; /* 0 = blanc, 1 = rouge */
 	int info;
 	struct date date;
 	struct sommet *suivant;
